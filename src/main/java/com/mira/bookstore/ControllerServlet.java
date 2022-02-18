@@ -80,7 +80,7 @@ public class ControllerServlet extends HttpServlet {
             throws SQLException, IOException {
         String title = request.getParameter("title");
         String author = request.getParameter("author");
-        float price = Float.parseFloat(request.getParameter("price"));
+        int price = Integer.parseInt(request.getParameter("price"));
 
         Book newBook = new Book(title, author, price);
         bookDAO.insertBook(newBook);
@@ -92,7 +92,7 @@ public class ControllerServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         String author = request.getParameter("author");
-        float price = Float.parseFloat(request.getParameter("price"));
+        int price = Integer.parseInt(request.getParameter("price"));
 
         Book book = new Book(id, title, author, price);
         bookDAO.updateBook(book);

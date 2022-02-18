@@ -38,7 +38,7 @@ public class BookDAO {
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, book.getTitle());
         statement.setString(2, book.getAuthor());
-        statement.setFloat(3, book.getPrice());
+        statement.setInt(3, book.getPrice());
 
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -61,7 +61,7 @@ public class BookDAO {
             int id = resultSet.getInt("id");
             String title = resultSet.getString("title");
             String author = resultSet.getString("author");
-            float price = resultSet.getFloat("price");
+            int price = resultSet.getInt("price");
 
             Book book = new Book(id, title, author, price);
             listBook.add(book);
@@ -99,7 +99,7 @@ public class BookDAO {
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, book.getTitle());
         statement.setString(2, book.getAuthor());
-        statement.setFloat(3, book.getPrice());
+        statement.setInt(3, book.getPrice());
         statement.setInt(4, book.getId());
 
         boolean rowUpdated = statement.executeUpdate() > 0;
@@ -123,7 +123,7 @@ public class BookDAO {
         if (resultSet.next()) {
             String title = resultSet.getString("title");
             String author = resultSet.getString("author");
-            float price = resultSet.getFloat("price");
+            int price = resultSet.getInt("price");
 
             book = new Book(id, title, author, price);
         }
@@ -133,20 +133,4 @@ public class BookDAO {
 
         return book;
     }
-
-
-
-    //Test Connection
-    public String data() throws SQLException{
-        String sql= "Select * from book";
-        connect();
-        Statement statement = jdbcConnection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-        ResultSetMetaData rsm = resultSet.getMetaData();
-        String databasename = rsm.getCatalogName(1);
-        return databasename;
-    }
-
-
-    //Experimental test
 }
