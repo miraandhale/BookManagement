@@ -1,7 +1,5 @@
 package com.mira.bookstore;
 
-import org.graalvm.compiler.replacements.nodes.CStringConstant;
-
 public class Book {
     protected int id;
     protected String title;
