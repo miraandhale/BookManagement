@@ -1,14 +1,13 @@
 package com.mira.bookstore;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,64 +26,53 @@ class BookDAOTest {
     @DisplayName("Connection Test")
     public void connectTest() throws SQLException{
         Connection jdbcConnection = BookDAO.connect();
-        Assert.assertNotNull(String.valueOf(jdbcConnection), true);
+        assertNotNull(jdbcConnection);
     }
 
     @Test
     @DisplayName("Insert Book")
     public void insertBookTest() throws SQLException {
-        BookDAO bookDAO = new BookDAO();
-        BookDAO.connect();
-        book.setId(38);
-        book.setTitle("Python");
-        book.setAuthor("Donals E. Kunth");
-        book.setPrice(700);
+        book.setId(4);
+        book.setTitle("Advanced Java");
+        book.setAuthor("Donald");
+        book.setPrice(430);
         bookDAO.insertBook(book);
-        Book book = bookDAO.getBook(38);
-        assertEquals("Donals E. Kunth", book.getAuthor());
+        Book book = bookDAO.getBook(4);
+        assertEquals("Donald", book.getAuthor());
     }
 
     @Test
     void deleteBookTest() throws SQLException {
-        Book book = bookDAO.getBook(38);
+        Book book = bookDAO.getBook(4);
         bookDAO.deleteBook(book);
-        assertNull(bookDAO.getBook(38));
+        assertNull(bookDAO.getBook(4));
     }
 
     @Test
     @DisplayName("Update Book")
     void updateBookTest() throws SQLException {
-        BookDAO bookDAO = new BookDAO();
-        Book book =bookDAO.getBook(5);
-        book.setPrice(200);
+        Book book =bookDAO.getBook(1);
+        book.setPrice(300);
         bookDAO.updateBook(book);
-        Book book1 =bookDAO.getBook(5);
-        assertEquals(200, book1.getPrice());
+        Book book1 =bookDAO.getBook(1);
+        assertEquals(300, book1.getPrice());
     }
 
     @Test
     @DisplayName("Retrieve book By ID")
     void getBook() throws SQLException {
         Book book = bookDAO.getBook(2);
-        Assert.assertEquals("Advanced Java", book.getTitle());
-        assertEquals("John", book.getAuthor());
-        Assert.assertEquals(600, book.getPrice());
+        assertAll(
+                () -> assertEquals("Computer Programming", book.getTitle()),
+                () -> assertEquals("john", book.getAuthor()),
+                () -> assertEquals(600, book.getPrice())
+        );
     }
 
-
     @Test
-    @DisplayName("Retrive All books")
-    public void ListBooksTest() throws SQLException {
-        String sql = "Select * from book";
-        Connection jdbcConnection = BookDAO.connect();
-        Statement statement = jdbcConnection.createStatement();
-        ResultSet rs = statement.executeQuery(sql);
-        while(rs.next()) {
-            int id = rs.getInt("id");
-            String title = rs.getString("title");
-            String author = rs.getString("author");
-            float price = rs.getFloat("price");
-            System.out.println(id + " " + title + " " + author + " " + " " + price);
-        }
-        }
+    @DisplayName("Retrieve table")
+    void getBooks() throws SQLException {
+        List<Book> book = bookDAO.listAllBooks();
+        assertTrue(book.size()>0);
+    }
 }
